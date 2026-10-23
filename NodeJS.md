@@ -61,3 +61,24 @@ fs.readFile('a.txt', 'utf8', function (err, data) {
 })
 
 ```
+
+导入和导出
+```js
+// 导出
+module.exports = {
+  a: 1,
+  b: 2
+}
+
+// 导入
+const { a, b } = require('./a.js');
+```
+默认导出
+```js
+export default { a, b }
+```
+设置别名
+```js
+import { a as a1, b as b1 } from './a.js'
+```
+
