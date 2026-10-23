@@ -13,7 +13,7 @@
    5. 输入node 文件名.js，回车，即可运行代码
 
 # 文件操作与模块化编程
-读取文件
+**读取文件**
 ```js
 const fs = require('fs');
 fs.readFile('文件路径', '编码格式', (err, data) => {
@@ -31,7 +31,8 @@ fs.readFile('a.txt', 'utf8', function (err, data) {
     console.log(data); // 你好
 })
 ```
-写入文件，如果文件不存在，则会创建文件，如果文件存在，则会覆盖文件
+**写入文件**
+如果文件不存在，则会创建文件，如果文件存在，则会覆盖文件
 ```js
 const fs = require('fs');
 fs.writeFile('文件路径', '写入内容', '编码格式', (err) => {
@@ -48,7 +49,8 @@ fs.writeFile('test.txt', 'Hello World!', function (err) {
     console.log('File saved!');
 })
 ```
-追加文件：先读后写
+**追加文件**
+先读后写
 ```js
 var fs = require('fs');
 fs.readFile('a.txt', 'utf8', function (err, data) {
