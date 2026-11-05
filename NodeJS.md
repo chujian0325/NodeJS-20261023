@@ -214,6 +214,20 @@ process.cwd();
 
 - process.cwd() 获取当前工作目录
 
+# path模块
+
+path模块提供了操作路径的功能
+
+```js
+path.resolve(__dirname, "./a.txt"); // 获取绝对路径(常用)
+path.join(__dirname, "./a.txt"); // 获取相对路径
+path.sep; // 获取当前操作系统的路径分隔符，windows是\，mac和linux是/
+path.parse(__dirname); // 获取路径信息对象
+path.basename(__dirname); // 获取文件名
+path.dirname(__dirname); // 获取文件所在目录
+path.extname(__dirname); // 获取文件扩展名
+```
+
 **导入和导出**
 
 ```js
