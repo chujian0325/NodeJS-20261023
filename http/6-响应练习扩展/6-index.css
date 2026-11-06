@@ -1,0 +1,11 @@
+ td {
+     padding: 20px, 40px;
+ }
+
+ tr:nth-child(odd) {
+     background: rgb(23, 225, 54);
+ }
+
+ tr:nth-child(even) {
+     background: pink;
+ }
