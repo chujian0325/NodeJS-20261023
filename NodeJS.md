@@ -547,6 +547,100 @@ server.listen(9000, () => {
 });
 ```
 
+# 设置MIME类型
+
+MIME(媒体类型)是一种标准，用来表示文档、文件或者字节流的性质和格式
+http服务可以设置响应头Content-Type来告诉浏览器返回的数据类型
+以下是常见文件对应的MIME类型
+
+```js
+html: text / html;
+css: text / css;
+js: text / javascript;
+png: image / png;
+jpg: image / jpeg;
+gif: image / gif;
+mp4: video / mp4;
+mp3: audio / mpeg;
+json: application / json;
+```
+
+```js
+/**
+ * 创建一个http服务，端口9000，满足如下需求
+ * GET /index.html               返回 page/index.html文件
+ * GET /css/app.css              返回 page/css/app.css文件
+ * GET /js/app.js                返回 page/js/app.js文件
+ * GET /images/logo.png          返回 page/images/logo.png文件
+ */
+
+const http = require("http");
+const fs = require("fs");
+const path = require("path");
+let mimes = {
+  html: "text/html",
+  css: "text/css",
+  js: "text/javascript",
+  png: "image/png",
+  jpg: "image/jpeg",
+  gif: "image/gif",
+  mp4: "video/mp4",
+  mp3: "audio/mpeg",
+  json: "application/json",
+};
+const server = http.createServer((request, response) => {
+  if (request.method !== "GET") {
+    response.statusCode = 405;
+    response.end("请求方法不允许");
+    return;
+  }
+  // 获取请求url路径
+  let { pathname } = new URL(request.url, "http://127.0.0.1");
+  //   拼接文件路径
+  let filePath = __dirname + "/page" + pathname;
+  //   读取文件fs，使用异步
+  fs.readFile(filePath, (err, data) => {
+    if (err) {
+      console.log(err);
+      switch (err.code) {
+        case "ENOENT":
+          response.statusCode = 404;
+          response.end(<h1>404 Not Found</h1>);
+
+        case "EPERM":
+          response.statusCode = 403;
+          response.end(<h1>403 Forbidden</h1>);
+
+        default:
+          response.statusCode = 500;
+          response.end("服务器错误");
+      }
+      response.setHeader("Content-Type", "text/html;charset=utf-8");
+      response.statusCode = 500;
+      response.end("文件读取失败");
+    }
+    // 获取文件后缀名，根据后缀名设置Content-Type
+    let ext = path.extname(filePath).slice(1);
+    // 获取对应类型
+    let type = mimes[ext];
+    if (type) {
+      if (ext === "html") {
+        response.setHeader("Content-Type", type + ";charset=utf-8");
+      } else {
+        response.setHeader("Content-Type", type);
+      }
+    } else {
+      response.setHeader("Content-Type", "application/octet-stream");
+    }
+    response.end(data);
+  });
+});
+
+server.listen(9000, () => {
+  console.log("服务器启动成功");
+});
+```
+
 **导入和导出**
 
 ```js
