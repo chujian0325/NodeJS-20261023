@@ -680,8 +680,58 @@ const { a, b } = require("./a.js");
 ```js
 import { a as a1, b as b1 } from "./a.js";
 ```
+
 # CommonJS规范
+
 module.exports、exports以及require是CommonJS规范里面的内容，Node.js是实现了CommonJS模块化规范
+
+# 包管理工具
+
+一、概念介绍
+1.1包是什么
+『包』英文单词是package，代表了一组特定功能的源码集合
+
+1.2包管理工具
+管理『包』的应用软件，可以对「包」进行下载安装，更新，删除，上传等操作
+借助包管理工具，可以快速开发项目，提升开发效率
+包管理工具是一个通用的概念，很多编程语言都有包管理工具，所以掌握好包管理工具非常重要
+
+1.3前端常用的包管理工具
+
+- npm
+- yarn
+- cnpm
+
+**npm**
+
+1. npm 初始化包
+
+```bash
+npm init  // 初始化项目，生成package.json文件
+/**
+ *  npm init 命令的作用是将文件夹初始化为一个『包』，交互式创建 package.json 文件
+ *  package.json是包的配置文件，每个包都必须要有 package.json
+ *初始化的过程中还有一些注意事项:
+ *  1.package name(包名)不能使用中文、大写，默认值是文件夹的名称，所以文件夹名称也不能使用中文和大写
+ *  2.version(版本号)要求x.x.x的形式定义,x必须是数字，默认值是1.0.0
+ *  3.ISC证书与MIT证书功能上是相同的，关于开源证书扩展阅读http://www.ruanyifeng.com/blog/2011/05/how_to_choose_free_software_licenses.html
+ *  4.package.json 可以手动创建与修改
+ *  5.使用 npm init -y 或者 npm init--yes 速创建package.json
+ */
+
+```
+
+2. 搜索包
+
+```bash
+npm search 包名
+```
+
+3. 安装包
+
+```bash
+npm install 包名
+```
 
 # Node脚手架-打造自己的脚手架工具
 
