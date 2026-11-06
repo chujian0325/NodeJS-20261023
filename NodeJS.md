@@ -641,23 +641,38 @@ server.listen(9000, () => {
 });
 ```
 
-**导入和导出**
+# 模块化导入和导出
+
+导出
 
 ```js
-// 导出
 module.exports = {
   a: 1,
   b: 2,
 };
+// 默认导出
+export default { a, b };
 
-// 导入
-const { a, b } = require("./a.js");
+/**
+ * module.exports 可以暴露任意数据
+ * 不能使用exports=value的形式暴露数据，模块内module和exports的隐式关系：exports = module.exports = {}
+ */
 ```
 
-默认导出
+导入
 
 ```js
-export default { a, b };
+const { a, b } = require("./a.js");
+/**
+ * 注意：
+ * 1. require ./不能省略
+ * 2. js、json文件后缀名可以省略，如果同名，先找js文件，再找json文件
+ * 3. 如果导入其他类型的文件，会以js文件进行处理
+ * 4. 如果导入的路径是个文件夹，则会
+ *    首先检测该文件夹下package.json文件中main属性对应的文件，如果存在则导入，反之如果文件不存在会报错。
+ *    如果main属性不存在，或者package.json不存在，则会尝试导入文件夹下的index.js和index.json，如果还是没找到，就会报错
+ * 5. 导入node.js内置模块时，直接require模块的名字即可，无需加./和../
+ */
 ```
 
 设置别名
