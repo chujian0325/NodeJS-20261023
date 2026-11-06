@@ -1,6 +1,6 @@
 const fs = require("fs");
 
-const files = fs.readdirSync("./fs");
+const files = fs.readdirSync("./");
 
 files.forEach((item) => {
   let data = item.split("-");
