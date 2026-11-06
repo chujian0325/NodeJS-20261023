@@ -680,6 +680,8 @@ const { a, b } = require("./a.js");
 ```js
 import { a as a1, b as b1 } from "./a.js";
 ```
+# CommonJS规范
+module.exports、exports以及require是CommonJS规范里面的内容，Node.js是实现了CommonJS模块化规范
 
 # Node脚手架-打造自己的脚手架工具
 
