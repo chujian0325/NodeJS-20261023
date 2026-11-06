@@ -756,3 +756,141 @@ npm install 包名
 2. 在根目录下创建一个package.json文件，用于描述脚手架工具的信息
 
 自定义脚手架
+
+# Express
+
+```bash
+npm init
+npm install express
+```
+
+## 基本使用
+
+```js
+// 1. 导入express
+const express = require("express");
+
+// 2. 创建应用对象
+const app = express();
+
+// 3. 创建路由规则
+app.get("/home", (req, res) => {
+  res.send("hello express");
+});
+
+// 4. 监听端口，启动服务
+app.listen(3000, () => {
+  console.log("服务已启动，端口号为80");
+});
+```
+
+## express路由
+
+路由是指如何定义请求的URL和处理请求的函数之间的映射关系
+路由由三部分组成：请求方法、请求URL和处理函数
+app.get()和app.post()分别定义了GET请求和POST请求的路由规则
+
+```js
+// 1. 导入express
+const express = require("express");
+
+// 2. 创建应用对象
+const app = express();
+
+// 3. 创建路由规则
+app.get("/", (req, res) => {
+  res.send("hello home");
+});
+app.get("/home", (req, res) => {
+  res.send("hello express");
+});
+// 匹配所有请求方式，一般写在最后
+app.all("/about", (req, res) => {
+  res.send("hello about");
+});
+// 404兜底路由，放在所有路由最后！Express 5.3.0 官方正确捕获全部路由写法：`{*splat}`
+app.all("{*splat}", (req, res) => {
+  res.send("404 Not Found");
+});
+
+// 4. 监听端口，启动服务
+app.listen(3000, () => {
+  console.log("服务已启动，端口号为3000");
+});
+```
+
+## 获取请求参数
+
+```js
+const express = require("express");
+const app = express();
+
+app.get("/", (req, res) => {
+  res.send("hello home");
+});
+app.get("/home", (req, res) => {
+  console.log(req.method); // GET
+  console.log(req.url); // /home
+  console.log(req.httpVersion); // 1.1
+  console.log(req.headers); // { host: 'localhost:3000', connection: 'keep-alive', ... }
+
+  console.log(req.query); // { name: 'zhangsan', age: '20' }
+  console.log(req.path); // /home
+  res.send("hello express");
+});
+
+app.listen(3000, () => {
+  console.log("服务已启动，端口号为3000");
+});
+```
+
+## 获取路由参数
+
+```js
+const express = require("express");
+const app = express();
+
+app.get("/", (req, res) => {
+  res.send("hello home");
+});
+app.get("/home", (req, res) => {
+  res.send("hello express");
+});
+app.get("/user/:id", (req, res) => {
+  console.log(req.params); // { id: '123' }
+  res.send("hello user");
+});
+```
+
+## 响应设置
+
+四、express响应设置
+express框架封装了一些API来方便给客户端响应数据，并且兼容原生HTTP模块的获取方式
+
+```js
+//获取请求的路由规则
+app.get("/response", (req, res) => {
+  //1.express中设置响应的方式兼容HTTP模块的方式
+  res.statusCode = 404;
+  res.statusMessage = "xxx";
+  res.setHeader("abc", "xyz");
+  res.write("响应体");
+  res.end("xxx");
+
+  //2.express 的响应方法
+  res.status(500); //设置响应状态码
+  res.set("xxx", "yyy"); //设置响应头res.send('中文响应不乱码');//设置响应体
+
+  //连贯操作
+  res.status(404).set("xxx", "yyy").send("你好朋友");
+
+  //3.其他响应
+  res.redirect("http://atguigu.com"); //重定向
+  res.download(__dirname + "/package.json"); //下载响应
+  res.json({
+    name: "why",
+    age: 18,
+  }); //响应 JSoN
+  res.sendFile(__dirname + "/home.html"); //响应文件内容
+});
+```

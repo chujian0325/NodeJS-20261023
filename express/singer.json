@@ -1,0 +1,30 @@
+[
+  {
+    "name": "周杰伦",
+    "id": 1,
+    "picUrl": "https://p1.music.126.net/6y-UleORITEDbvrOLV0Q8A==/5639395138885805.jpg",
+    "albumSize": 100,
+    "mvSize": 100
+  },
+  {
+    "name": "薛之谦",
+    "id": 2,
+    "picUrl": "https://p1.music.126.net/6y-UleORITEDbvrOLV0Q8A==/5639395138885805.jpg",
+    "albumSize": 100,
+    "mvSize": 100
+  },
+  {
+    "name": "张学友",
+    "id": 3,
+    "picUrl": "https://p1.music.126.net/6y-UleORITEDbvrOLV0Q8A==/5639395138885805.jpg",
+    "albumSize": 100,
+    "mvSize": 100
+  },
+  {
+    "name": "陈奕迅",
+    "id": 4,
+    "picUrl": "https://p1.music.126.net/6y-UleORITEDbvrOLV0Q8A==/5639395138885805.jpg",
+    "albumSize": 100,
+    "mvSize": 100
+  }
+]
