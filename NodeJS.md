@@ -1103,3 +1103,46 @@ app.listen(9000, () => {
   console.log("Server is running on port 9000");
 });
 ```
+
+# 路由模块化
+
+routes/homeRouter.js
+
+```js
+// 1. 导入express
+const express = require("express");
+
+// 2. 创建路由对象
+const router = express.Router();
+
+// 3. 挂载路由
+router.get("/home", (req, res) => {
+  res.send("前台首页");
+});
+router.get("/search", (req, res) => {
+  res.send("内容搜索");
+});
+
+// 4. 导出路由对象
+module.exports = router;
+```
+
+```js
+const express = require("express");
+
+const homeRouter = require("./routes/homeRouter");
+const adminRouter = require("./routes/adminRouter");
+
+const app = express();
+
+app.use(homeRouter);
+app.use(adminRouter);
+
+app.all("{*splat}", (req, res) => {
+  res.send("404 Not Found");
+});
+
+app.listen(9000, () => {
+  console.log("http://127.0.0.1");
+});
+```
