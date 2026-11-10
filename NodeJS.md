@@ -1309,4 +1309,24 @@ home.ejs
 </html>
 ```
 
+### express-generator
 
+```bash
+#  在当前目录下生成一个模板引擎为ejs的express项目
+npx express-generator -e express-ejs-pro
+cd express-ejs-pro
+npm install
+npm start
+# 安装nodemon，可以实现免重启生效
+npm i nodemon --save-dev
+
+```
+
+默认浏览器地址是http://127.0.0.1:3000
+package.json
+
+```json
+"scripts": {
+  "start": "nodemon ./bin/www"  // 这里要改下
+},
+```
