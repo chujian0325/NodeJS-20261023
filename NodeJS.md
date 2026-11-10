@@ -1330,3 +1330,9 @@ package.json
   "start": "nodemon ./bin/www"  // 这里要改下
 },
 ```
+
+### 处理文件上传报文
+
+```bash
+npm i formidable
+```
