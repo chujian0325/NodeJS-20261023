@@ -1376,3 +1376,11 @@ router.post('/portrait', function(req, res, next) {
 module.exports = router;
 
 ```
+
+# 记账本
+```bash
+npx express-generator -e account-pro 
+npm i nodemon
+npm i
+npm start
+```
