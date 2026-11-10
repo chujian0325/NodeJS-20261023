@@ -894,3 +894,133 @@ app.get("/response", (req, res) => {
   res.sendFile(__dirname + "/home.html"); //响应文件内容
 });
 ```
+
+## express中间件
+
+1. 什么是中间件
+   中间件(Middleware)本质是一个回调函数
+   中间件函数可以像路由回调一样访问请求对象(request)，响应对象(response)
+2. 中间件的作用
+   中间件的作用就是使用函数封装公共操作，简化代码
+3. 中间件的类型
+   - 全局中间件
+   - 路由中间件
+
+### 定义全局中间件
+
+每一个请求到达服务端之后都会执行全局中间件函数
+声明中间件函数
+
+```js
+let recordMiddleware = function(request, response, next){
+//实现功能代码
+...
+//执行next函数(当如果希望执行完中间件函数之后，仍然继续执行路由中的回调函数，必须调用next)
+next();
+}
+```
+
+### 全局中间件实践
+
+```js
+const express = require("express");
+const fs = require("fs");
+const path = require("path");
+const app = express();
+
+// 声明中间件函数
+function log(req, res, next) {
+  // 获取url和ip
+  let { url, ip } = req;
+  console.log(url, ip);
+  // 将信息保存在access.log中，持续添加，所以用appendFile
+  fs.appendFile(
+    path.resolve(__dirname, "./access.log"),
+    `${url} ${ip}\r\n`,
+    (err) => {},
+  );
+  next();
+}
+// 使用全局中间件，这样每个请求都会经过这个中间件
+app.use(log);
+// 定义路由
+app.get("/home", (req, res) => {
+  res.send("home");
+});
+app.get("/admin", (req, res) => {
+  res.send("admin");
+});
+
+app.all("{*splat}", (req, res) => {
+  res.send("404 Not Found");
+});
+
+app.listen(9000, () => {
+  console.log("http://127.0.0.1");
+});
+```
+
+### 路由中间件实践
+
+```js
+const express = require("express");
+const app = express();
+
+// 声明路由中间件
+function checkCodeMiddleware(req, res, next) {
+  // 判断url是否有code = 521
+  if (req.query.code == "521") {
+    next();
+  } else {
+    res.send("没有权限");
+  }
+}
+
+app.get("/admin", checkCodeMiddleware, (req, res) => {
+  res.send("admin");
+});
+app.get("/setting", checkCodeMiddleware, (req, res) => {
+  res.send("setting");
+});
+
+app.all("{*splat}", (req, res) => {
+  res.send("404 Not Found");
+});
+
+app.listen(9000, () => {
+  console.log("http://127.0.0.1");
+});
+```
+
+### 静态资源中间件
+
+```js
+const express = require("express");
+const app = express();
+// 静态资源中间件设置,express.static的参数是静态资源的路径，它还会自动设置响应头MIME类型
+app.use(express.static(__dirname + "/public"));
+
+// 定义路由
+app.get("/home", (req, res) => {
+  res.send("home");
+});
+
+app.get("/admin", (req, res) => {
+  res.send("admin");
+});
+
+app.all("{*splat}", (req, res) => {
+  res.send("404 Not Found");
+});
+
+app.listen(9000, () => {
+  console.log("http://127.0.0.1");
+});
+```
+
+注意事项：
+
+1. index.html文件为默认打开的资源
+2. 如果静态资源与路由规则同时匹配，谁先匹配谁就响应（谁写在前面，优先执行谁）
+3. 路由响应动态资源，静态资源中间件响应静态资源
+
