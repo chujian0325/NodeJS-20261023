@@ -1024,3 +1024,53 @@ app.listen(9000, () => {
 2. 如果静态资源与路由规则同时匹配，谁先匹配谁就响应（谁写在前面，优先执行谁）
 3. 路由响应动态资源，静态资源中间件响应静态资源
 
+## 获取请求体数据
+
+express中没有内置获取请求体数据的中间件，需要使用第三方中间件body-parser
+
+```js
+/**
+ * 按要求搭建http服务
+ * GET /login 显示表单网页
+ * POST /login 获取表单的【用户名】和【密码】请求体数据，并返回响应
+ */
+const express = require("express");
+const bodyParser = require("body-parser");
+const app = express();
+
+app.get("/login", (req, res) => {
+  // res.send('表单页面')
+  // 响应html文件
+  res.sendFile(__dirname + "/01-form.html");
+});
+// 解析json格式的请求体数据
+let jsonParser = bodyParser.json();
+
+// 解析urlencoded格式的请求体数据
+let urlencodedParser = bodyParser.urlencoded({ extended: false });
+
+app.post("/login", urlencodedParser, (req, res) => {
+  res.send(`用户名：${req.body.username}，密码：${req.body.password}`);
+});
+app.listen(9000, () => {
+  console.log("Server is running on port 9000");
+});
+```
+
+```html
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form action="http://127.0.0.1:9000/login" method="post">
+      用户名：<input type="text" name="username" /><br />
+      密码：<input type="password" name="password" /><br />
+      <button>提交</button>
+    </form>
+  </body>
+</html>
+```
