@@ -1146,3 +1146,167 @@ app.listen(9000, () => {
   console.log("http://127.0.0.1");
 });
 ```
+
+# 模板引擎
+
+模板引擎是分离用户界面和业务数据的一种技术
+
+## EJS
+
+EJS 是一套简洁的、高效的模板引擎，专门为 Node.js 环境设计
+
+### 基本使用
+
+```bash
+npm i ejs
+```
+
+```js
+const ejs = require("ejs");
+const fs = require("fs");
+let china = "中国";
+
+let str = `我爱你${china}`;
+let weather = "今天是晴天";
+let str2 = fs.readFileSync("./01-EJS.html").toString();
+// 使用ejs模板引擎
+// let html = ejs.render("我爱你 <%= china %>", { china: china });
+let html = ejs.render(str2, { china: china, weather });
+
+console.log(html);
+```
+
+```html
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h2>我爱你 <%= china %></h2>
+    <p><%= weather %></p>
+  </body>
+</html>
+```
+
+### 列表渲染
+
+```js
+const ejs = require("ejs");
+const fs = require("fs");
+let xiyou = ["唐僧", "孙悟空", "猪八戒", "沙僧"];
+
+// let str = "<ul>";
+
+// xiyou.forEach((item) => {
+//   str += `<li>${item}</li>`;
+// });
+
+// str += "</ul>";
+// console.log(str);
+
+// EJS实现
+let str2 = fs.readFileSync("./02.西游.html").toString();
+let result = ejs.render(str2, { xiyou });
+console.log(result);
+```
+
+```html
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>西游四人</h1>
+    <ul>
+      <% xiyou.forEach((item) => { %>
+      <li><%= item%></li>
+      <% }) %>
+    </ul>
+  </body>
+</html>
+```
+
+### 条件渲染
+
+```js
+/**
+ * 通过isLogin决定要输出的内筒
+ * true 输出<span>欢迎回来</span>
+ * false 输出<button>登录</button> <button>注册</button>
+ */
+
+const ejs = require("ejs");
+let isLogin = false;
+
+// 原生JS实现：
+// if (isLogin) {
+//   console.log("<span>欢迎回来</span>");
+// } else {
+//   console.log("<button>登录</button> <button>注册</button>");
+// }
+
+// EJS 实现：
+
+let result = ejs.render(
+  `
+    <% if(isLogin){%>
+    <span>欢迎回来</span>
+    <% }else{%>
+    <button>登录</button> <button>注册</button>
+    <% }%>
+    `,
+  { isLogin: isLogin },
+);
+console.log(result);
+```
+
+### 在express中使用ejs
+
+```js
+const express = require("express");
+const ejs = require("ejs");
+const path = require("path");
+
+const app = express();
+// 1. 设置模板引擎为ejs
+app.set("view engine", "ejs"); // 设置模板引擎为ejs
+// 2. 设置模板文件所在的目录: 模板文件：具有模板内容的文件
+app.set("views", path.resolve(__dirname, "./views")); // 设置模板文件所在的目录
+app.get("/", (req, res) => {
+  // 3.通过render方法渲染模板文件
+  // 声明变量
+  let title = "hello world";
+  res.render("home", {
+    title, // 传递给模板的变量
+  });
+});
+
+app.listen(9000, () => {
+  console.log("服务器启动成功");
+});
+```
+
+home.ejs
+
+```ejs
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>测试</h2>
+    <h3><%=title%></h3>
+</body>
+</html>
+```
+
+
