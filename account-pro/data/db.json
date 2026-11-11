@@ -1,44 +1,12 @@
 {
   "accounts": [
     {
-      "id": "Wh55QzrLs",
-      "title": "ssddd",
-      "time": "2026-11-05",
-      "type": "1",
-      "account": "200",
-      "remark": "s"
-    },
-    {
-      "id": "03xA6QX5B",
-      "title": "ss",
-      "time": "2026-11-20",
-      "type": "-1",
-      "account": "30",
-      "remark": "eeee"
-    },
-    {
       "id": "Ve1DQ2Ceu",
       "title": "a",
       "time": "2026-11-03",
       "type": "1",
       "account": "2000",
       "remark": "礼金"
-    },
-    {
-      "id": "wpkzpSphg",
-      "title": "工资",
-      "time": "2026-11-10",
-      "type": "1",
-      "account": "12000",
-      "remark": "发工资啦 好开心"
-    },
-    {
-      "id": 1,
-      "title": "买玉米",
-      "time": "2026-11-02",
-      "type": "-1",
-      "account": "25",
-      "remark": "想吃了"
     },
     {
       "id": "--sNEiVEC",
