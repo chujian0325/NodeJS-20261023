@@ -1336,25 +1336,26 @@ package.json
 ```bash
 npm i formidable
 ```
+
 ```js
-var express = require('express');
+var express = require("express");
 var router = express.Router();
-const { formidable } = require('formidable') 
+const { formidable } = require("formidable");
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+router.get("/", function (req, res, next) {
+  res.render("index", { title: "Express" });
 });
 
 // 显示网页（表单）
-router.get('/portrait', function(req, res, next) {
-  res.render('portrait',);
+router.get("/portrait", function (req, res, next) {
+  res.render("portrait");
 });
 // 处理文件上传
-router.post('/portrait', function(req, res, next) {
+router.post("/portrait", function (req, res, next) {
   // 创建form对象
   const form = formidable({
-    uploadDir:  __dirname + '/../public/images', // 上传文件的存储目录
+    uploadDir: __dirname + "/../public/images", // 上传文件的存储目录
     keepExtensions: true, // 保留文件扩展名
   });
   // 解析请求报文
@@ -1368,19 +1369,51 @@ router.post('/portrait', function(req, res, next) {
     console.log(files);
     // 服务器保存该图片的访问url，将来将此数据保存在数据库中
     // http://127.0.0.1:3000/images/f16x7bawge02rfn4eydqyhq3p.png
-    let url = '/images/'+files.portrait[0].newFilename
+    let url = "/images/" + files.portrait[0].newFilename;
     res.send(url);
   });
-})
+});
 
 module.exports = router;
-
 ```
 
 # 记账本
+
 ```bash
-npx express-generator -e account-pro 
+npx express-generator -e account-pro
 npm i nodemon
 npm i
 npm start
+npm i lowdb@1.0.0 // 数据存储，通过json文件存储
+npm i shortid // 生成随机id
 ```
+
+lowdb使用
+
+````js
+const low = require('lowdb')
+const FileSync = require('lowdb/adapters/FileSync')
+
+const adapter = new FileSync('db.json')
+const db = low(adapter)
+
+// Set some defaults
+db.defaults({ posts: [], user: {} })
+  .write()
+
+// Add a post
+db.get('posts')
+  .push({ id: 1, title: 'lowdb is awesome'})
+  .write()
+
+// Set a user using Lodash shorthand syntax
+db.set('user.name', 'typicode').write()
+// 获取数据
+db.get('posts').value()
+// 删除数据, 返回结果为被删除的数据
+let delItem = db.get('posts').remove({ id: '3' }).write()
+// 获取单条数据
+db.get('posts').find({ id: '3' }).value()
+// 更新数据
+db.get('posts').find({ id: '3' }).assign({ title: 'lowdb is awesome' }).write()```
+````

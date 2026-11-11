@@ -1,0 +1,28 @@
+{
+  "accounts": [
+    {
+      "id": "wpkzpSphg",
+      "title": "工资",
+      "time": "2026-11-10",
+      "type": "1",
+      "account": "12000",
+      "remark": "发工资啦 好开心"
+    },
+    {
+      "id": 1,
+      "title": "买玉米",
+      "time": "2026-11-02",
+      "type": "-1",
+      "account": "25",
+      "remark": "想吃了"
+    },
+    {
+      "id": "--sNEiVEC",
+      "title": "买玉米2",
+      "time": "2026-11-01",
+      "type": "-1",
+      "account": "12",
+      "remark": "早餐"
+    }
+  ]
+}
