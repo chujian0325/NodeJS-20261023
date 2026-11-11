@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>记账本</title>
+    <style>
+      .detail {
+        border: 1px solid #ccc;
+        margin: 30px;
+      }
+      .date {
+        border-bottom: 1px solid #ccc;
+        height: 50px;
+        line-height: 50px;
+        padding: 0 20px;
+      }
+      .item {
+        height: 50px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+      }
+      .type{
+        padding: 5px;
+        border-radius: 5px;
+      }
+      .green {
+        background-color: green;
+      }
+      .orange {
+        background-color: orange;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <h1>记账本</h1>
+      <div class="detail">
+        <div class="date">2026-10-12</div>
+        <div class="item">
+          <div>买西瓜</div>
+          <div class="type orange">支出</div>
+          <div>20元</div>
+        </div>
+      </div>
+      <div class="detail">
+        <div class="date">2026-10-20</div>
+        <div class="item">
+          <div>红包</div>
+          <div class="type green">收入</div>
+          <div>10元</div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
