@@ -22,7 +22,17 @@
         align-items: center;
         padding: 0 20px;
       }
-      .type{
+      .pink {
+        background-color: pink;
+      }
+      .skyblue{
+        background-color: skyblue;
+      }
+      .item div{
+        width: 140px;
+      }
+      .item .type{
+        width: 40px;
         padding: 5px;
         border-radius: 5px;
       }
@@ -37,22 +47,19 @@
   <body>
     <div>
       <h1>记账本</h1>
-      <div class="detail">
-        <div class="date">2026-10-12</div>
+      <%result.forEach((item) => {%>
+        <div class="detail">
+        <div class="date <%= item.type == 1 ? 'pink' : 'skyblue'%>"><%=item.time%></div>
         <div class="item">
-          <div>买西瓜</div>
-          <div class="type orange">支出</div>
-          <div>20元</div>
+          <div><%=item.title%></div>
+          <div class="type <%= item.type == 1 ? 'green' : 'orange'%>">
+            <%= item.type == 1 ? '收入' : '支出'%>
+          </div>
+          <div><%=item.account%> 元</div>
+          <div><%=item.remark%></div>
         </div>
       </div>
-      <div class="detail">
-        <div class="date">2026-10-20</div>
-        <div class="item">
-          <div>红包</div>
-          <div class="type green">收入</div>
-          <div>10元</div>
-        </div>
-      </div>
+      <%})%>
     </div>
   </body>
 </html>

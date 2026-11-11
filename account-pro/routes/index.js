@@ -10,7 +10,9 @@ const db = low(adapter)
  
 /* 记账本列表. */
 router.get('/account', function(req, res, next) {
-  res.render('list')
+  let result = db.get('accounts').value()
+  console.log(result)
+  res.render('list',{ result })
 });
 router.get('/account/create', function(req, res, next) {
   res.render('create')
