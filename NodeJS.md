@@ -1417,3 +1417,71 @@ db.get('posts').find({ id: '3' }).value()
 // 更新数据
 db.get('posts').find({ id: '3' }).assign({ title: 'lowdb is awesome' }).write()```
 ````
+
+# mongoDB使用
+
+mongoDB有三个概念：数据库、集合、文档
+数据库：是一个数据仓库，数据库服务下可以创建很多数据仓库，数据库中可以存放很多集合
+集合：集合是数据库中存放文档的地方，一个数据库可以包含多个集合，集合类似于数组
+文档：文档是集合中的数据，一个集合可以包含多个文档，文档类似于对象
+https://www.mongodb.com/try/download/community
+
+```bash
+# 先拉mongodb源
+brew tap mongodb/brew
+brew trust mongodb/brew
+
+brew install mongodb-community@8.0
+# 启动服务
+brew services start mongodb-community@8.0
+# 连接
+mongosh
+# 显示所有的数据库
+show dbs
+```
+
+## 数据库命令
+
+```bash
+# 显示所有的数据库
+show dbs
+# 切换到指定的数据库
+use 数据库名
+# 显示当前所在的数据库
+db
+# 删除当前数据库
+use 数据库名
+db.dropDatabase()
+```
+
+## 集合命令
+
+```bash
+# 创建集合
+db.createCollection("集合名")
+# 显示当前数据库中的所有集合
+show collections
+# 删除集合
+db.集合名.drop()
+# 重命名集合
+db.集合名.renameCollection('新名称')
+```
+
+## 文档命令
+
+```bash
+# 插入文档
+db.集合名.insert(文档对象)
+# 查询文档
+db.集合名.find(查询条件)
+# _id是mongodb自动生成的唯一编号，用来唯一标识文档
+# 查询全部文档
+db.user.find()
+
+# 更新文档
+db.集合名.update(查询条件, 新的文档)
+db.集合名.update({name: '张三'}, {$set: {age: 20}})
+
+# 删除文档
+db.集合名.remove(查询条件)
+```
