@@ -1386,6 +1386,8 @@ npm i
 npm start
 npm i lowdb@1.0.0 // 数据存储，通过json文件存储
 npm i shortid // 生成随机id
+npm i mongoose // 数据库
+npm i moment // 时间处理
 ```
 
 lowdb使用
