@@ -10,10 +10,12 @@ const adapter = new FileSync(__dirname + '/../data/db.json')
 const db = low(adapter)
  
 /* 记账本列表. */
-router.get('/account', function(req, res, next) {
-  let result = db.get('accounts').value()
+router.get('/account', async function(req, res, next) {
+  // let result = db.get('accounts').value()
+
+  let result = await AccountModel.find().sort({ time: -1 })
   console.log(result)
-  res.render('list',{ result })
+  res.render('list',{ result, moment})
 });
 router.get('/account/create', function(req, res, next) {
   res.render('create')
