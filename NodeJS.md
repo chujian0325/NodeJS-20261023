@@ -1782,3 +1782,93 @@ limit: 截取多少条
 // 数据截取: skip(跳过多少条) limit(限制输出多少条)，分页或者截取第几条到第几条的数据
 let result3 = await BookModel.find().limit(2);
 ```
+
+## mongoose模块化
+
+config/config.js
+
+```js
+// 配置文件
+module.exports = {
+  dbHost: "127.0.0.1",
+  dbName: "bilibili",
+  dbPort: 27017,
+};
+```
+
+db/db.js
+
+```js
+/**
+ *
+ * @param {*} success  数据库连接成功的回调
+ * @param {*} error  数据库连接失败的回调
+ */
+module.exports = function (success, error) {
+  // 1. 安装 npm i mongoose
+  // 2. 导入
+  const mongoose = require("mongoose");
+  const { dbHost, dbName, dbPort } = require("../config/config");
+
+  // 3. 连接mongodb                           数据库名称
+  mongoose.connect(`mongodb://${dbHost}:${dbPort}/${dbName}`);
+
+  // 4.设置回调
+  // 连接成功的回调 once事件回调只执行一次
+  mongoose.connection.once("open", () => {
+    success();
+  });
+  // 连接失败的回调
+  mongoose.connection.on("error", () => {
+    error();
+  });
+  // 连接关闭的回调
+  mongoose.connection.on("close", () => {});
+};
+```
+
+创建models/BookModel.js
+
+```js
+const mongoose = require("mongoose");
+
+// 创建文档结构对象
+// 设置集合中，文档的属性以及属性值的类型
+let BookSchema = new mongoose.Schema({
+  name: String,
+  author: String,
+  price: Number,
+});
+
+// 创建模型对象：对文档操作的封装对象
+let BookModel = mongoose.model("books", BookSchema);
+
+// 暴露模型对象
+module.exports = BookModel;
+```
+
+index.js
+
+```js
+// 导入db
+const db = require("./db/db");
+// 导入BookModel
+const BookModel = require("./models/BookModel");
+
+// 调用db
+db(
+  () => {
+    console.log("连接成功........");
+    BookModel.create({
+      name: "node.js",
+      price: 100,
+      author: "张三",
+    });
+  },
+  () => {
+    console.log("连接失败.......");
+  },
+);
+```
+
+
