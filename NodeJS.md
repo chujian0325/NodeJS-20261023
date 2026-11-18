@@ -1485,3 +1485,300 @@ db.集合名.update({name: '张三'}, {$set: {age: 20}})
 # 删除文档
 db.集合名.remove(查询条件)
 ```
+
+# Mongoose使用
+
+mongoose是Node.js中连接MongoDB的驱动程序，它提供了对MongoDB的便捷操作
+https://mongoosejs.com/
+
+```bash
+npm install mongoose
+```
+
+## 基础使用
+
+```javascript
+// 1. 安装 npm i mongoose
+// 2. 导入
+const mongoose = require("mongoose");
+
+// 3. 连接mongodb                           数据库名称
+mongoose.connect("mongodb://127.0.0.1:27017/bilibili");
+
+// 4.设置回调
+// 连接成功的回调 once事件回调只执行一次
+mongoose.connection.once("open", () => {
+  console.log("连接成功");
+});
+// 连接失败的回调
+mongoose.connection.on("error", () => {
+  console.log("连接失败");
+});
+// 连接关闭的回调
+mongoose.connection.on("close", () => {
+  console.log("连接关闭");
+});
+```
+
+## 创建
+
+```js
+// 1. 安装 npm i mongoose
+// 2. 导入
+const mongoose = require("mongoose");
+const { Schema } = mongoose;
+
+// 3. 连接mongodb                           数据库名称
+mongoose.connect("mongodb://127.0.0.1:27017/bilibili");
+
+// 4.设置回调
+// 连接成功的回调 once事件回调只执行一次
+mongoose.connection.once("open", () => {
+  console.log("连接成功");
+  // 5. 创建文档结构对象
+  // 设置集合中，文档的属性以及属性值的类型
+  let BookSchema = new Schema({
+    name: String,
+    author: String,
+    price: Number,
+  });
+
+  // 6. 创建模型对象：对文档操作的封装对象
+  let BookModel = mongoose.model("books", BookSchema);
+  // 7. 新增
+  BookModel.create({
+    name: "西游记",
+    author: "吴承恩",
+    price: 20.34,
+  });
+});
+// 连接失败的回调
+mongoose.connection.on("error", () => {
+  console.log("连接失败");
+});
+// 连接关闭的回调
+mongoose.connection.on("close", () => {
+  console.log("连接关闭");
+});
+```
+
+## 字段类型
+
+```js
+// 1. 安装 npm i mongoose
+// 2. 导入
+const mongoose = require("mongoose");
+const { Schema } = mongoose;
+
+// 3. 连接mongodb                           数据库名称
+mongoose.connect("mongodb://127.0.0.1:27017/bilibili");
+
+// 4.设置回调
+// 连接成功的回调 once事件回调只执行一次
+mongoose.connection.once("open", () => {
+  console.log("连接成功");
+  // 5. 创建文档结构对象
+  // 设置集合中，文档的属性以及属性值的类型
+  let BookSchema = new Schema({
+    name: String,
+    author: String,
+    price: Number,
+    is_hot: Boolean,
+    tags: Array,
+    pub_time: Date,
+    test: mongoose.Schema.Types.Mixed, // 任意类型
+  });
+
+  // 6. 创建模型对象：对文档操作的封装对象
+  let BookModel = mongoose.model("books", BookSchema);
+  // 7. 新增
+  BookModel.create({
+    name: "西游记",
+    author: "吴承恩",
+    price: 20.34,
+    is_hot: true,
+    tags: ["历史", "政治"],
+    pub_time: new Date(),
+    test: "test",
+  });
+});
+// 连接失败的回调
+mongoose.connection.on("error", () => {
+  console.log("连接失败");
+});
+// 连接关闭的回调
+mongoose.connection.on("close", () => {
+  console.log("连接关闭");
+});
+```
+
+## 字段值验证
+
+mongoose提供了很多内置的验证器，比如：required、minlength、maxlength、enum、min、max等
+
+```js
+// 必填项
+title: {
+  type: String,
+  required: true
+}
+// 默认值
+title: {
+  type: String,
+  default: "默认值"
+}
+// 枚举值
+status: {
+  type: String,
+  enum: ["published","draft"]
+}
+// 唯一值
+title: {
+  type: String,
+  unique: true // unique: true 唯一值，需要重建集合才能有效果
+}
+
+
+let BookSchema = new Schema({
+  name: {
+    type: String,
+    required: true, // 必填
+  },
+  author: {
+    type: String,
+    default: "吴承恩", // 默认值
+  },
+  style: {
+    type: String,
+    enum: ["言情", "科幻", "历史"], // 枚举值
+  },
+  price: Number,
+});
+```
+
+## 删除文档
+
+```js
+// 删除一条数据
+const res = await BookModel.deleteOne({ _id: "6afcff3fa5f1152875d42564" });
+console.log("删除", res);
+console.log(res.deletedCount); // 1=成功，0=没找到匹配数据
+
+// 删除多条数据（批量删除）
+const res = await BookModel.deleteMany({ author: "吴承恩" });
+console.log("删除多条数据（批量删除）", res);
+```
+
+## 更新文档
+
+```js
+// 更新一条，参数1：筛选条件，参数2：更新内容
+const res = await BookModel.updateOne(
+  { _id: "6afd04d7da6447bac19b6994" },
+  { price: "39.9" },
+);
+console.log("更新一条", res);
+
+// 更新多条，参数1：筛选条件，参数2：更新内容
+const res2 = await BookModel.updateMany({ name: "西游记" }, { price: "59.9" });
+console.log("更新多条", res2);
+```
+
+## 读取文档
+
+```js
+// 7. 读取文档：参数1：筛选条件，参数2：读取内容
+BookModel.findOne(
+  { _id: "6afd04d7da6447bac19b6994" },
+  { name: 1, author: 1, price: 1, _id: 0 },
+).then((result) => {
+  console.log(result); // { name: '西游记', author: '吴承恩', price: 59.9 }
+});
+
+// 8.根据id读取文档
+BookModel.findById("6afd04d7da6447bac19b6994").then((result) => {
+  console.log(result); // { _id: 6afd04d7da6447bac19b6994, name: '西游记', author: '吴承恩', price: 59.9 }
+});
+
+// 9. 批量获取，参数1：筛选条件
+BookModel.find({ author: "吴承恩" }).then((result) => {
+  console.log(result); // [ { _id: 6afd04d7da6447bac19b6994, name: '西游记', author: '吴承恩', price: 59.9 } ]
+});
+// 10. 获取所有文档
+BookModel.find().then((result) => {});
+```
+
+## 条件控制
+
+**运算符**
+在mongodb中，不能使用>、<、>=、<=、!== 等比较运算符，需要使用$gt、$lt、$gte、$lte、$ne等运算符代替
+
+| > | $gt | 大于 |
+| < | $lt | 小于 |
+| = | $gte | 大于等于 |
+| <= | $lte | 小于等于 |
+| !== | $ne | 不等于 |
+
+```js
+// 11. 条件查询
+BookModel.find({ price: { $gt: 50 } }).then((result) => {
+  console.log(result); //筛选价格大于50的
+});
+```
+
+**逻辑运算符**：$or、$and、$not、$nor
+
+```js
+BookModel.find({ $or: [{ price: { $gt: 50 } }, { author: "吴承恩" }] }).then(
+  (result) => {
+    console.log(result);
+  },
+);
+```
+
+**正则表达式**
+用来模糊查询
+
+```js
+BookModel.find({ name: /传/ }).then((result) => {
+  console.log(result); // 筛选名字中包含“传”的
+});
+BookModel.find({ name: new RegExp("传") }).then((result) => {
+  console.log(result); // 筛选名字中包含“传”的
+});
+```
+
+## 个性化读取
+
+**字段筛选**
+0: 不要的字段
+1: 要显示的字段
+
+```js
+// 只显示name和author字段
+let result = await BookModel.find().select({
+  name: 1,
+  author: 1,
+  _id: 0,
+});
+```
+
+**数据排序**
+1: 升序
+-1: 降序
+
+```js
+// 按照价格降序排序
+let result2 = await BookModel.find().sort({
+  price: -1,
+});
+```
+
+**数据截取**
+skip: 跳过多少条
+limit: 截取多少条
+
+```js
+// 数据截取: skip(跳过多少条) limit(限制输出多少条)，分页或者截取第几条到第几条的数据
+let result3 = await BookModel.find().limit(2);
+```
