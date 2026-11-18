@@ -1,5 +1,8 @@
 #!/usr/bin/env node
-
+// 导入db函数
+const db = require('../db/db')
+// 先连上数据库，再去启动服务器
+db(()=>{
 /**
  * Module dependencies.
  */
@@ -88,3 +91,4 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+})

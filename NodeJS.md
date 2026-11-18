@@ -1870,5 +1870,7 @@ db(
   },
 );
 ```
+## Mongoose图形化工具：Navicat for MongoDB
+https://www.navicat.com.cn/products这里下载中文版
 
 
