@@ -1872,7 +1872,21 @@ db(
   },
 );
 ```
+
 ## Mongoose图形化工具：Navicat for MongoDB
+
 https://www.navicat.com.cn/products这里下载中文版
 
+# json-server
 
+```bash
+npm i json-server -g
+# 创建db.json文件，编写数据结构
+json-server --watch db.json
+```
+
+# 接口测试工具
+
+apipost
+apifox
+postman
