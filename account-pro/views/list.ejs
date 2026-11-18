@@ -47,6 +47,7 @@
   <body>
     <div>
       <h1>记账本</h1>
+      <div><button><a href="/account/create">添加账本</a></button></div>
       <%result.forEach((item) => {%>
         <div class="detail">
         <div class="date <%= item.type == 1 ? 'pink' : 'skyblue'%>"><%= moment(item.time).format("YYYY-MM-DD") %></div>
@@ -58,11 +59,25 @@
           <div><%=item.account%> 元</div>
           <div><%=item.remark%></div>
           <div>
-            <a href="/account/<%=item.id%>">删除</a>
+            <a class="delBtn" href="/account/<%=item.id%>">删除</a>
           </div>
         </div>
       </div>
       <%})%>
     </div>
   </body>
+  <script>
+
+    const delBtns = document.querySelectorAll('.delBtn')
+    delBtns.forEach((item) => {
+      item.addEventListener('click', (e) => {
+        if (confirm('确定删除吗？')) {
+          return true
+        } else {
+          // 阻止默认行为
+          e.preventDefault()
+        }
+      })
+    })
+  </script>
 </html>

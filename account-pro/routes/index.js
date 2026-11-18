@@ -40,9 +40,10 @@ router.post('/account', function(req, res, next) {
 })
 
 // 删除
-router.get('/account/:id', function(req, res, next) {
+router.get('/account/:id', async function(req, res, next) {
   let id = req.params.id
-  db.get('accounts').remove({ id }).write()
+  // db.get('accounts').remove({ id }).write()
+  await AccountModel.deleteOne({ _id: id })
   res.render('success', { msg: '删除成功', url: '/account' })
 })
 module.exports = router;
