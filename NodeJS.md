@@ -1892,3 +1892,62 @@ json-server --watch db.json
 apipost
 apifox
 postman
+
+# 会话控制
+
+http是无状态的，无法区分请求是否来自同一个客户端，所以需要会话控制
+
+常见的会话控制有三种：
+
+- cookie
+- session
+- token
+
+## cookie
+
+cookie是http服务器发送到用户浏览器并保存在本地的一小块数据
+cookie数据始终在同源的http请求中携带，在浏览器和服务器之间传递
+cookie数据的大小不能超过4KB
+cookie是按照域名区分的，不同域名下的cookie是不能互相访问的
+浏览器向服务器发送请求时，会自动将当前域名下可用的cookie值添加到请求头中，发送给服务器
+
+特点：
+
+1. 会在浏览器关闭的时候销毁
+2. 不同浏览器的cookie是不共享的
+
+### 在express中设置cookie
+
+```js
+app.get("/setCookie", (req, res) => {
+  res.cookie("name", "zhangsan");
+  res.cookie("name", "zhangsan", {
+    maxAge: 1000 * 60 * 60 * 24 * 7,
+  }); // 设置cookie的过期时间，即使把浏览器关了，没到过期时间，再打开浏览器也是有效的
+  res.send("设置cookie成功");
+});
+```
+
+### 在express中获取cookie
+
+```bash
+npm i cookie-parser
+```
+
+```js
+const cookieParser = require("cookie-parser");
+app.use(cookieParser());
+app.get("/getCookie", (req, res) => {
+  console.log(req.cookies);
+  res.send("获取cookie成功，欢迎", req.cookies.name);
+});
+```
+
+### 在express中删除cookie
+
+```js
+app.get("/deleteCookie", (req, res) => {
+  res.clearCookie("name");
+  res.send("删除cookie成功");
+});
+```
