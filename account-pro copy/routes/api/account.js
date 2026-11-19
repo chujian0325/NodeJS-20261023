@@ -66,6 +66,7 @@ router.delete("/account/:id", async function (req, res, next) {
     });
   }
 });
+// 查询单条数据
 router.get("/account/:id", async function (req, res, next) {
   try {
     let id = req.params.id;
@@ -81,6 +82,32 @@ router.get("/account/:id", async function (req, res, next) {
       code: "1004",
       data: null,
       message: "读取失败",
+    });
+  }
+});
+// 更新账单信息
+router.patch("/account/:id", async function (req, res, next) {
+  try {
+    let id = req.params.id;
+    await AccountModel.updateOne(
+      {
+        _id: id,
+      },
+      req.body,
+    );
+    // 再次查询数据库，返回更新后的信息
+    // 响应成功的JSON数据
+    let resultById = await AccountModel.findById(id);
+    res.json({
+      code: "0000",
+      data: resultById,
+      message: "更新成功",
+    });
+  } catch (error) {
+    res.json({
+      code: "1004",
+      data: null,
+      message: "更新失败",
     });
   }
 });
