@@ -3,11 +3,12 @@ var router = express.Router();
 const AccountModel = require("../../models/AccountModel");
 const moment = require("moment");
 
+const checkLoginMiddleware = require("../../middlewares/checkLoginMiddleware");
 /* 记账本列表. */
-router.get("/account", async function (req, res, next) {
+router.get("/account", checkLoginMiddleware, async function (req, res, next) {
   try {
     let result = await AccountModel.find().sort({ time: -1 });
-    res.render('list', { result, moment });
+    res.render("list", { result, moment });
     // 响应成功的JSON数据
     // res.json({
     //   code: "0000",
@@ -22,11 +23,11 @@ router.get("/account", async function (req, res, next) {
     // });
   }
 });
-router.get("/account/create", function (req, res, next) {
+router.get("/account/create", checkLoginMiddleware, function (req, res, next) {
   res.render("create");
 });
 // 新增记录
-router.post("/account", async function (req, res, next) {
+router.post("/account", checkLoginMiddleware, async function (req, res, next) {
   // 获取请求数据， 2026-11-12 需要转为日期对象 new Date()，借助moment
   console.log("请求体", req.body);
   try {
@@ -50,7 +51,7 @@ router.post("/account", async function (req, res, next) {
 });
 
 // 删除
-router.delete("/account/:id", async function (req, res, next) {
+router.delete("/account/:id", checkLoginMiddleware, async function (req, res, next) {
   let id = req.params.id;
   try {
     await AccountModel.deleteOne({ _id: id });
