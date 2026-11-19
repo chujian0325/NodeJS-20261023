@@ -7,18 +7,19 @@ const moment = require("moment");
 router.get("/account", async function (req, res, next) {
   try {
     let result = await AccountModel.find().sort({ time: -1 });
+    res.render('list', { result, moment });
     // 响应成功的JSON数据
-    res.json({
-      code: "0000",
-      data: result,
-      message: "读取成功",
-    });
+    // res.json({
+    //   code: "0000",
+    //   data: result,
+    //   message: "读取成功",
+    // });
   } catch (error) {
-    res.json({
-      code: "1001",
-      data: null,
-      message: "读取失败",
-    });
+    // res.json({
+    //   code: "1001",
+    //   data: null,
+    //   message: "读取失败",
+    // });
   }
 });
 router.get("/account/create", function (req, res, next) {
