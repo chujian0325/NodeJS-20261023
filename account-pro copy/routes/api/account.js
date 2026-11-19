@@ -49,9 +49,21 @@ router.post("/account", async function (req, res, next) {
 });
 
 // 删除
-router.get("/account/:id", async function (req, res, next) {
+router.delete("/account/:id", async function (req, res, next) {
   let id = req.params.id;
-  await AccountModel.deleteOne({ _id: id });
-  res.render("success", { msg: "删除成功", url: "/account" });
+  try {
+    await AccountModel.deleteOne({ _id: id });
+    res.json({
+      code: "0000",
+      data: null,
+      message: "删除成功",
+    });
+  } catch (error) {
+    res.json({
+      code: "1003",
+      data: null,
+      message: "删除失败",
+    });
+  }
 });
 module.exports = router;
