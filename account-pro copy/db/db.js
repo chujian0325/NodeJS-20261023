@@ -10,7 +10,9 @@ module.exports = function (success, error) {
   const { dbHost, dbName, dbPort } = require("../config/config");
 
   // 3. 连接mongodb                           数据库名称
-  mongoose.connect(`mongodb://${dbHost}:${dbPort}/${dbName}`);
+  mongoose.connect(`mongodb://${dbHost}:${dbPort}/${dbName}`,{
+    serverSelectionTimeoutMS: 5000, // 3秒内无法选中可用Mongo实例，直接抛错，不加这个，MongoDB 关掉之后，`await find()` 会无限重试、卡住，不会进 catch
+  });
 
   // 4.设置回调
   // 连接成功的回调 once事件回调只执行一次
