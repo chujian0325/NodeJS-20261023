@@ -2057,3 +2057,12 @@ app.listen(3000, () => {
   console.log("服务器在3000端口启动");
 });
 ```
+
+## session和cookie的区别
+
+1. cookie是存储在客户端，session是存储在服务器端
+2. cookie以明文形式存在客户端，不安全，session存在服务端，相对安全
+3. cookie设置内容过多会增大报文体积，影响传输效率，session存储在服务器端，占用服务器资源，只通过cookie存储sessionid，不会影响传输效率
+4. cookie有有效期，session没有有效期，关闭浏览器后session会失效
+5. cookie可以设置httpOnly，防止js操作cookie，session无法设置httpOnly
+6. 浏览器限制单个cookie保存的数据不能超过4K，而且单个域名下的存储数量也有限制，session没有限制
