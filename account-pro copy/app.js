@@ -9,6 +9,7 @@ var logger = require('morgan');
 
 // 导入account 接口路由文件
 const accountRouter = require('./routes/api/account')
+const authRouter = require('./routes/web/auth')
 var app = express();
 
 // view engine setup
@@ -23,6 +24,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // app.use('/', indexRouter);
 app.use('/api', accountRouter);
+app.use('/', authRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
