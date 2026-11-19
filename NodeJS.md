@@ -1436,6 +1436,8 @@ brew trust mongodb/brew
 brew install mongodb-community@8.0
 # 启动服务
 brew services start mongodb-community@8.0
+# 关闭服务
+brew services stop mongodb-community@8.0
 # 连接
 mongosh
 # 显示所有的数据库
