@@ -48,6 +48,7 @@
     <div>
       <h1>记账本</h1>
       <div><button><a href="/account/create">添加账本</a></button></div>
+      <div><button><a href="/logout">退出登录</a></button></div>
       <%result.forEach((item) => {%>
         <div class="detail">
         <div class="date <%= item.type == 1 ? 'pink' : 'skyblue'%>"><%= moment(item.time).format("YYYY-MM-DD") %></div>

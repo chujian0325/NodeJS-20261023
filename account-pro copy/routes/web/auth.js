@@ -55,8 +55,18 @@ router.post("/login", async function (req, res, next) {
     res.json({
       code: 200,
       data: null,
-      msg: "注册失败",
+      msg: "登录失败",
     });
+  }
+});
+
+// 退出登录
+router.get("/logout", async function (req, res, next) {
+  try {
+    // 销毁session
+    req.session.destroy();
+    res.render("success", { msg: "退出成功", url: "/login" });
+  } catch (error) {
   }
 });
 module.exports = router;
