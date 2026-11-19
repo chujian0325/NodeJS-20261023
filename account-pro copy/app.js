@@ -10,7 +10,31 @@ var logger = require('morgan');
 // 导入account 接口路由文件
 const accountRouter = require('./routes/api/account')
 const authRouter = require('./routes/web/auth')
+const { dbHost, dbName, dbPort } = require("./config/config");
+
+const session = require("express-session");
+const { MongoStore } = require("connect-mongo");
+
 var app = express();
+
+// 设置session中间件,
+// 会自动在数据库中创建sessions集合，用于存储session数据
+app.use(
+  session({
+    name: "sid", // 设置cookie的name，默认值是connect.sid
+    secret: "atguigu", // 参与加密的字符串，又称签名、加盐
+    saveUninitialized: false, // 是否为每次请求都设置一个cookie用来存储session的id
+    resave: true, // 是否每次请求都重新保存session，默认是false
+    // 设置session的存储位置
+    store: MongoStore.create({
+      mongoUrl: `mongodb://${dbHost}:${dbPort}/${dbName}`,
+    }),
+    cookie: {
+      httpOnly: true, // 开启后，前端无法通过js操作
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 设置sessionID的过期时间，7天
+    },
+  }),
+);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

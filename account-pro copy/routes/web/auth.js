@@ -46,6 +46,9 @@ router.post("/login", async function (req, res, next) {
     if (!result) {
       res.send("用户名或密码错误");
     } else {
+      // 登录成功，将用户信息存储到session中
+      req.session.username = result.username;
+      req.session._id = result._id;
       res.render("success", { msg: "登录成功", url: "/account" });
     }
   } catch (error) {
