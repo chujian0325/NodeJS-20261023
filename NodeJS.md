@@ -1951,3 +1951,38 @@ app.get("/deleteCookie", (req, res) => {
   res.send("删除cookie成功");
 });
 ```
+
+## session
+
+session是保存在服务器端的一块数据，保存当前访问用户的一些信息
+
+### express中使用session
+
+```bash
+# connect-mongo可以连接数据库，并对数据库做一些操作，比如存储session到数据库中
+npm i express-session connect-mongo
+```
+
+```js
+const session = require("express-session");
+const MongoStore = require("connect-mongo");
+
+const app = express();
+// 设置session中间件
+app.use(
+  session({
+    name: "sid", // 设置cookie的name，默认值是connect.sid
+    secret: "atguigu", // 参与加密的字符串，又称签名、加盐
+    saveUninitialized: false, // 是否为每次请求都设置一个cookie用来存储session的id
+    resave: true, // 是否每次请求都重新保存session，默认是false
+    // 设置session的存储位置
+    store: MongoStore.create({
+      mongoUrl: "mongodb://localhost:27017/bilibili",
+    }),
+    cookie: {
+      httpOnly: true, // 开启后，前端无法通过js操作
+      maxAge: 24 * 60 * 60 * 1000, // 设置sessionID的过期时间
+    },
+  }),
+);
+```
