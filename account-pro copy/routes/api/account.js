@@ -66,4 +66,22 @@ router.delete("/account/:id", async function (req, res, next) {
     });
   }
 });
+router.get("/account/:id", async function (req, res, next) {
+  try {
+    let id = req.params.id;
+    let result = await AccountModel.findById(id);
+    // 响应成功的JSON数据
+    res.json({
+      code: "0000",
+      data: result,
+      message: "读取成功",
+    });
+  } catch (error) {
+    res.json({
+      code: "1004",
+      data: null,
+      message: "读取失败",
+    });
+  }
+});
 module.exports = router;
