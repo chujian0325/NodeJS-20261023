@@ -2079,3 +2079,42 @@ Token的特点:
 - 扩展性更强
   - 服务间可以共享
   - 增加服务节点更简单
+
+# JWT
+
+JWT(JSoNWebToken)是目前最流行的跨域认证解决方案，可用于基于token的身份验证
+JWT使token的生成与校验更规范
+我们可以使用`jsonwebtoken`包来操作token
+
+```bash
+npm install jsonwebtoken
+```
+
+```js
+// 导入jwt
+const jwt = require("jsonwebtoken");
+
+// 创建（生成）token
+
+// let token = jwt.sign(用户数据, 加密字符串, 配置对象);
+let token = jwt.sign({ username: "admin" }, "bilibili", {
+  expiresIn: 60 * 60 * 24 * 7, // 7天 单位是秒
+});
+console.log(token);
+
+let t = "dkdkkdk";// 随便写的，模拟token
+
+// 校验token
+/**
+ * 参数1：token
+ * 参数2：加密字符串
+ * 参数3：回调函数
+ */
+jwt.verify(t, "bilibili", (err, decoded) => {
+  if (err) {
+    console.log("校验失败");
+    return;
+  }
+  console.log(decoded);
+});
+```
