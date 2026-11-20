@@ -2066,3 +2066,16 @@ app.listen(3000, () => {
 4. cookie有有效期，session没有有效期，关闭浏览器后session会失效
 5. cookie可以设置httpOnly，防止js操作cookie，session无法设置httpOnly
 6. 浏览器限制单个cookie保存的数据不能超过4K，而且单个域名下的存储数量也有限制，session没有限制
+
+# token
+
+Token的特点:
+
+- 服务端压力更小
+  - 数据存储在客户端
+- 相对更安全
+  - 数据加密
+  - 可以避免CSRF(跨站请求伪造)
+- 扩展性更强
+  - 服务间可以共享
+  - 增加服务节点更简单
