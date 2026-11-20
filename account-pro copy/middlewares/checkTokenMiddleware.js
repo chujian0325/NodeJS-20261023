@@ -20,6 +20,8 @@ module.exports = function (req, res, next) {
         data: null,
       });
     }
+    // 保存用户的信息
+    req.user = authData;
+    next();
   });
-  next();
 };
