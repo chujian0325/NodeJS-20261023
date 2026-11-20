@@ -1,9 +1,16 @@
-var express = require("express");
-var router = express.Router();
+const express = require("express");
+const router = express.Router();
 const AccountModel = require("../../models/AccountModel");
 const moment = require("moment");
 
 const checkLoginMiddleware = require("../../middlewares/checkLoginMiddleware");
+
+// 首页路由规则
+router.get("/", checkLoginMiddleware, async function (req, res, next) {
+  // 重定向
+  res.redirect("/account");
+  
+})
 /* 记账本列表页面 */
 router.get("/account", checkLoginMiddleware, async function (req, res, next) {
   try {

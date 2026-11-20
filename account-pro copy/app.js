@@ -50,9 +50,11 @@ app.use('/', indexRouter);
 app.use('/api', accountRouter);
 app.use('/', authRouter);
 
+// 配置404页面
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  next(createError(404));
+  // next(createError(404));
+  res.render("404");
 });
 
 // error handler
