@@ -9,6 +9,7 @@ var indexRouter = require('./routes/web/index');
 
 // 导入account 接口路由文件
 const accountRouter = require('./routes/api/account')
+const authApiRouter = require('./routes/api/auth')
 const authRouter = require('./routes/web/auth')
 const { dbHost, dbName, dbPort } = require("./config/config");
 
@@ -48,6 +49,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/api', accountRouter);
+app.use('/api', authApiRouter);
 app.use('/', authRouter);
 
 // 配置404页面
