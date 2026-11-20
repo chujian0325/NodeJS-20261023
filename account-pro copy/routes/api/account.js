@@ -1,14 +1,14 @@
-var express = require("express");
-var router = express.Router();
+const express = require("express");
+const router = express.Router();
 const AccountModel = require("../../models/AccountModel");
 const moment = require("moment");
 
-const checkLoginMiddleware = require("../../middlewares/checkLoginMiddleware");
+// 声明中间件
+const checkTokenMiddleware = require("../../middlewares/checkTokenMiddleware");
 /* 记账本列表. */
-router.get("/account", checkLoginMiddleware, async function (req, res, next) {
+router.get("/account", checkTokenMiddleware, async function (req, res, next) {
   try {
     let result = await AccountModel.find().sort({ time: -1 });
-    // res.render("list", { result, moment });
     // 响应成功的JSON数据
     res.json({
       code: "0000",
@@ -23,11 +23,8 @@ router.get("/account", checkLoginMiddleware, async function (req, res, next) {
     });
   }
 });
-router.get("/account/create", checkLoginMiddleware, function (req, res, next) {
-  res.render("create");
-});
 // 新增记录
-router.post("/account", checkLoginMiddleware, async function (req, res, next) {
+router.post("/account", checkTokenMiddleware, async function (req, res, next) {
   // 获取请求数据， 2026-11-12 需要转为日期对象 new Date()，借助moment
   console.log("请求体", req.body);
   try {
@@ -51,7 +48,7 @@ router.post("/account", checkLoginMiddleware, async function (req, res, next) {
 });
 
 // 删除
-router.delete("/account/:id", checkLoginMiddleware, async function (req, res, next) {
+router.delete("/account/:id", checkTokenMiddleware, async function (req, res, next) {
   let id = req.params.id;
   try {
     await AccountModel.deleteOne({ _id: id });
@@ -69,7 +66,7 @@ router.delete("/account/:id", checkLoginMiddleware, async function (req, res, ne
   }
 });
 // 查询单条数据
-router.get("/account/:id", async function (req, res, next) {
+router.get("/account/:id", checkTokenMiddleware, async function (req, res, next) {
   try {
     let id = req.params.id;
     let result = await AccountModel.findById(id);
@@ -88,7 +85,7 @@ router.get("/account/:id", async function (req, res, next) {
   }
 });
 // 更新账单信息
-router.patch("/account/:id", async function (req, res, next) {
+router.patch("/account/:id", checkTokenMiddleware,async function (req, res, next) {
   try {
     let id = req.params.id;
     await AccountModel.updateOne(
